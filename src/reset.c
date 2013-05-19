@@ -1,8 +1,12 @@
+extern void SystemInit(void);
+extern void start(void);
+
 void ResetHandler(void)
 {
-	init();
+	//init();
+	SystemInit();
 	
-	main();
+	start();
 	
 	while(1) {
 		;
