@@ -3,17 +3,18 @@ MEMORY {
 	RAM (rwx)  : ORIGIN = 0x10000000, LENGTH =  4k
 }
 
-ENTRY(ResetHandler)
+ENTRY(Reset_Handler)
 
 SECTIONS {
+	. = ORIGIN(FLASH);
+	_stext = .;
 	.text : {
-		_stext = .;
 		KEEP(*(.vector))
 		*(.text .text.*)
 		*(.rodata .rodata.*)
-		. = ALIGN(4);
-		_etext = .;
 	} >FLASH =0
+	. = ALIGN(4);
+	_etext = .;
 	
 	_sidata = .;
 	.data : {

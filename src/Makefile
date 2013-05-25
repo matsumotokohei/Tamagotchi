@@ -1,30 +1,43 @@
-CC = ~/local/arm-2012.03/bin/arm-none-eabi-gcc
-LD = ~/local/arm-2012.03/bin/arm-none-eabi-ld
-OBJCOPY = ~/local/arm-2012.03/bin/arm-none-eabi-objcopy
+#
+# Environment
+#
+CROSS_COMPILE = arm-none-eabi-
+CMSIS_DIR  = ./CMSISv1p30_LPC11xx
 
-CFLAGS  = -mcpu=cortex-m0 -mthumb
-CFLAGS += -g -O0
-CFLAGS += -I./ 
+CC = $(CROSS_COMPILE)gcc
+LD = $(CROSS_COMPILE)ld
+OBJCOPY = $(CROSS_COMPILE)objcopy
 
 HEX = Tamagotchi.hex
 ELF = Tamagotchi.elf
 LNK = Tamagotchi.ld
 MAP = Tamagotchi.map
-OBJS = vector.o reset.o init.o main.o
 
+CFLAGS  = -mcpu=cortex-m0 -mthumb -O1 -Wall -Werror -I$(CMSIS_DIR)/inc
+LDFLAGS += -Map=$(MAP) -T$(LNK) -nostdlib
+
+INCS = $(CMSIS_DIR)/inc/core_cm0.h \
+       $(CMSIS_DIR)/inc/LPC11xx.h \
+       $(CMSIS_DIR)/inc/system_LPC11xx.h
+INCS  += main.h gpio.h uart.h
+OBJS += vector.o reset.o main.o gpio.o dsp.o uart.o
+SRCS += vector.s reset.c main.c gpio.c dsp.c uart.c
+
+#
+#
+#
 all: $(HEX)
 
 $(HEX) : $(ELF)
 	$(OBJCOPY) -F ihex $< $@
 
-$(ELF) : $(LNK) $(OBJS) 
-	$(LD) -Map $(MAP) -o$@ -T$(LNK) $(OBJS)
+$(ELF) : $(LNK) $(OBJS)
+	$(LD) $(LDFLAGS) -o$@ $(OBJS) $(CMSIS_OBJS)
 
-.s.o : 
-	$(CC) $(CFLAGS) -c $< 
-
-.c.o : 
-	$(CC) $(CFLAGS) -c $<
+$(OBJS) : $(SRCS) $(INCS)
+	for x in $(SRCS); do \
+		$(CC) $(CFLAGS) -c $$x; \
+	done
 
 clean:
 	$(RM) $(HEX) $(ELF) $(MAP)
