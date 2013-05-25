@@ -3,7 +3,7 @@ MEMORY {
 	RAM (rwx)  : ORIGIN = 0x10000000, LENGTH =  4k
 }
 
-ENTRY(ResetHandler)
+ENTRY(Reset_Handler)
 
 SECTIONS {
 	. = ORIGIN(FLASH);
