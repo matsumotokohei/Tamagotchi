@@ -1,20 +1,29 @@
-//#include "LPC1100.h"
 #include <LPC11xx.h>
+#include "gpio.h"
+#include "uart.h"
+#include "dsp.h"
 
-void start(void)
+void __SystemInit(void)
 {
-	int i;
+	LPC_SYSCON->SYSAHBCLKDIV = 1; 
+	LPC_SYSCON->SYSAHBCLKCTRL = 0x1005F;
+}
 
-//	GPIO1DIR |= _BV(5);
-	LPC_GPIO1->DIR |= (1 << 5);
-	for (;;) {
-		for (i = 0; i < 1024 * 1024; i++) {
-//			GPIO1DATA = GPIO1DATA;
-			LPC_GPIO1->DATA = LPC_GPIO1->DATA;
-		}
-//		GPIO1DATA ^= _BV(5);
-		LPC_GPIO1->DATA ^= (1 << 5);
+void __main(void)
+{
+	UART_init();
+	GPIO_init();
+
+	if ( SysTick_Config(12000000) ) {
+		while(1);
 	}
 
+	__enable_irq();
+
+	puts("LPC1114 UART Tset\r\n");
+
+	while(1) {
+		;
+	}
 }
 
