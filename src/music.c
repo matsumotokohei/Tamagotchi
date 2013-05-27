@@ -1,0 +1,59 @@
+#include <LPC11xx.h>
+#include "music.h"
+
+#define DIV0 2 
+#define DIV1 4 
+#define DIV2 8
+
+const uint16_t Freq[] = {
+	12000000 / DIV0 / 262,
+	12000000 / DIV0 / 294,
+	12000000 / DIV0 / 330,
+	12000000 / DIV0 / 349,
+	12000000 / DIV0 / 392,
+	12000000 / DIV0 / 440,
+	12000000 / DIV0 / 494,
+	12000000 / DIV0 / 523,
+	12000000 / DIV1 / 262,
+	12000000 / DIV1 / 294,
+	12000000 / DIV1 / 330,
+	12000000 / DIV1 / 349,
+	12000000 / DIV1 / 392,
+	12000000 / DIV1 / 440,
+	12000000 / DIV1 / 494,
+	12000000 / DIV1 / 523,
+	12000000 / DIV2 / 262,
+	12000000 / DIV2 / 294,
+	12000000 / DIV2 / 330,
+	12000000 / DIV2 / 349,
+	12000000 / DIV2 / 392,
+	12000000 / DIV2 / 440,
+	12000000 / DIV2 / 494,
+	12000000 / DIV2 / 523
+};
+
+void TMR16_Init(void)
+{
+	LPC_SYSCON->SYSAHBCLKCTRL |= (1 << 8); /* CT16B1 */
+
+	LPC_TMR16B1->MCR |= (1 << 1); 
+	LPC_TMR16B1->EMR |= (3 << 4);
+
+	LPC_IOCON->PIO1_9 |= 1;
+}
+
+void TMR32_Init(void)
+{
+	LPC_SYSCON->SYSAHBCLKCTRL |= (1 << 10); /* CT32B1 */
+
+//	LPC_TMR32B1->MCR |= (1 << 10); 
+	LPC_TMR32B1->MCR |= (1 << 1); 
+//	LPC_TMR32B1->EMR |= (3 << 10);
+	LPC_TMR32B1->EMR |= (3 << 4);
+
+//	LPC_IOCON->PIO1_4 |= 3;
+	LPC_IOCON->R_PIO1_1 |= 3;
+}
+
+
+
