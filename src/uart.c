@@ -1,7 +1,7 @@
 #include <LPC11xx.h>
 #include "uart.h"
 
-#define BAUDRATE 9600
+#define BAUDRATE (9600)
 
 void UART_init(void)
 {

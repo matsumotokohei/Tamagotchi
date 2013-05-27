@@ -2,6 +2,8 @@
 
 void GPIO_init(void)
 {
+	LPC_SYSCON->SYSAHBCLKCTRL |= (1 << 6);
+
 	LPC_IOCON->PIO1_5 = 0xd0; /* pull up */
 
 	LPC_IOCON->PIO0_7 = 0xd0; /* pull up */
@@ -17,11 +19,6 @@ void GPIO_init(void)
 
 	/* interrupt */
 	NVIC_EnableIRQ(EINT0_IRQn);
-#if 0
-	NVIC_EnableIRQ(EINT1_IRQn);
-	NVIC_EnableIRQ(EINT2_IRQn);
-	NVIC_EnableIRQ(EINT3_IRQn);
-#endif
 
 	LPC_GPIO0->IS &= ~(1 << 7);
 	LPC_GPIO0->IS &= ~(1 << 4);

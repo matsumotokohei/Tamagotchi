@@ -16,12 +16,12 @@ MAP = Tamagotchi.map
 CFLAGS  = -mcpu=cortex-m0 -mthumb -O1 -Wall -Werror -I$(CMSIS_DIR)/inc
 LDFLAGS += -Map=$(MAP) -T$(LNK) -nostdlib
 
-INCS = $(CMSIS_DIR)/inc/core_cm0.h \
-       $(CMSIS_DIR)/inc/LPC11xx.h \
-       $(CMSIS_DIR)/inc/system_LPC11xx.h
-INCS  += main.h gpio.h uart.h
-OBJS += vector.o reset.o main.o gpio.o dsp.o uart.o
-SRCS += vector.s reset.c main.c gpio.c dsp.c uart.c
+INCS  = $(CMSIS_DIR)/inc/core_cm0.h \
+        $(CMSIS_DIR)/inc/LPC11xx.h \
+        $(CMSIS_DIR)/inc/system_LPC11xx.h
+INCS += main.h gpio.h uart.h music.h
+OBJS += vector.o reset.o main.o gpio.o dsp.o uart.o music.o
+SRCS += vector.s reset.c main.c gpio.c dsp.c uart.c music.c
 
 #
 #
